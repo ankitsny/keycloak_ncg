@@ -1,0 +1,95 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/Nerzal/gocloak"
+	controller "github.com/anksk333/keycloak_ncg/controllers"
+	"github.com/gin-gonic/gin"
+)
+
+// User :
+type User struct {
+	FirstName *string `json:"firstName"`
+	LastName  *string `json:":lastName"`
+	Enabled   *bool   `json:"enabled"`
+	UserName  *string `json:"userName"`
+}
+
+var userData = `{
+	"firstName": "Ankit",
+	"lastName": "Kumar",
+	"enabled": true,
+	"userName: "ankso"
+}
+`
+
+// REALM :
+const REALM = "master"
+
+// AdminUserID :
+const AdminUserID = "ankit"
+
+// AdminPassword :
+const AdminPassword = "admin"
+
+// KeycloakHost :
+const KeycloakHost = "http://127.0.0.1:8080"
+
+// CreateUserByID :
+func CreateUserByID(client gocloak.GoCloak, token *gocloak.JWT, id string) string {
+
+	user := gocloak.User{
+		FirstName: "Ankit",
+		LastName:  "Kumar",
+		Enabled:   true,
+		Username:  id,
+	}
+
+	nUID, err1 := client.CreateUser(token.AccessToken, REALM, user)
+
+	if err1 != nil {
+		fmt.Println(err1.Error())
+		panic(err1)
+	}
+
+	return *nUID
+}
+
+func main() {
+
+	router := gin.Default()
+
+	controller.Register(router)
+
+	router.Run(":8000")
+
+	// client := gocloak.NewClient(KeycloakHost)
+
+	// token, err := client.LoginAdmin(AdminUserID, AdminPassword, REALM)
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	panic("Something wrong with the credentials or url")
+	// }
+
+	// userName := "id3"
+	// uID := CreateUserByID(client, token, userName)
+
+	// if err := client.SetPassword(token.AccessToken, uID, REALM, "Pass", false); err != nil {
+	// 	fmt.Println("SetPassword", err)
+	// 	return
+	// }
+	// fmt.Println("Password Changed")
+
+	// clientID := "account"
+	// clientSecret := "11c6d961-9454-4984-a46c-2a90bc2b2ccb"
+	// u, err2 := client.Login(clientID, clientSecret, REALM, userName, "Pass")
+
+	// if err2 != nil {
+	// 	fmt.Println("Login: ", err2)
+	// 	return
+	// }
+	// fmt.Printf("\n\n%+v", u)
+
+}
