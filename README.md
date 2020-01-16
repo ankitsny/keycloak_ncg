@@ -13,3 +13,9 @@ docker run -p 8080:8080 -e KEYCLOAK_USER="ankit" -e KEYCLOAK_PASSWORD="admin" jb
 ```
 
 > [Checkout](https://hub.docker.com/r/jboss/keycloak/) for more configuration in docker
+
+## ncg Server
+
+1. Clone the repo
+2. run `go get ./...`
+3. run `go run main.go`
